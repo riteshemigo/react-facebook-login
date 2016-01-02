@@ -17,7 +17,7 @@ class FacebookLogin extends React.Component {
     textButton: 'Login with Facebook',
     scope: 'public_profile, email, user_birthday',
     xfbml: false,
-    size: 'medium',
+    size: 'medium_fb',
   };
 
   constructor(props) {
@@ -50,16 +50,13 @@ class FacebookLogin extends React.Component {
   }
 
   responseApi = (authResponse) => {
-    FB.api('/me', (me) => {
-      console.log("-------------responseApi");
+    FB.api('/me?fields=name,email,first_name,last_name,age_range,link,gender,locale,verified,friends', (me) => {
       me.accessToken = authResponse.accessToken;
       this.props.callback(me);
     });
   };
 
   checkLoginState = (response) => {
-    console.log("-------------checkLoginState");
-    console.log(response);
     if (response.authResponse) {
       this.responseApi(response.authResponse);
     } else {
